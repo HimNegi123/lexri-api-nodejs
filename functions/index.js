@@ -1,6 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { getFoodGuideOptions } = require('../functions/getFoodGuideOptions');
+const { FoodGuideOptions } = require('../models/food_guide_model');
 
 admin.initializeApp();
 
@@ -23,11 +24,11 @@ exports.getFoodGuideOptionsData = functions.https.onRequest(async (req, res) => 
         if (!data) {
             return res.status(500).json({ error: 'No data returned from OpenAI' });
         }
-        
+       
         // Respond with the received data
         return res.status(200).json({
             message: 'Data retrieved successfully',
-            data: data
+            data: JSON.parse(data)
         });
     } catch (error) {
         console.error('Error getting food guide options:', error);

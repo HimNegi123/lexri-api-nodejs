@@ -22,7 +22,8 @@ async function main() {
         }
   
         const data = await response.json();
-        console.log('Food Guide Options:', data);
+
+        console.log('Food Guide Options:', data.data.options);
         return data; // Return the data if needed
     } catch (error) {
         console.error('Failed to fetch food guide options:', error.message);
