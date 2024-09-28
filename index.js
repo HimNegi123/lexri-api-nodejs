@@ -1,5 +1,4 @@
-const dotenv = require('dotenv');
-dotenv.config(); // Load environment variables
+ // Load environment variables
 
 async function main() {
     const userInput = "I want to gain bulk what foods are good."; // User's initial request  

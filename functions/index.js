@@ -1,11 +1,12 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-const { getFoodGuideOptions } = require('../functions/getFoodGuideOptions');
-const { FoodGuideOptions } = require('../models/food_guide_model');
+const {logger} = require("firebase-functions");
+const {onRequest} = require("firebase-functions/v2/https");
 
-admin.initializeApp();
+// The Firebase Admin SDK to access Firestore.
+const {initializeApp} = require("firebase-admin/app");
+const {getFoodGuideOptions}=require('./utils/getFoodGuideOptions')
+initializeApp();
 
-exports.getFoodGuideOptionsData = functions.https.onRequest(async (req, res) => {
+exports.getFoodGuideOptionsData = onRequest(async (req, res) => {
 
     if (req.method !== 'GET') {
         return res.status(405).json({ error: 'Method Not Allowed' });
@@ -13,11 +14,10 @@ exports.getFoodGuideOptionsData = functions.https.onRequest(async (req, res) => 
 
     const userInput = req.query.userInput;
     const condition = req.query.condition;
-
     if (!userInput || typeof userInput !== 'string' || userInput.trim() === '') {
-        return res.status(400).json({ error: 'userInput is required and must be a non-empty string' });
+        return res.status(400).json({ error: 'userInput is required and must be a non-empty string' }); 
     }
-
+    
     try {
         const data = await getFoodGuideOptions(userInput, condition);
         console.log(data);

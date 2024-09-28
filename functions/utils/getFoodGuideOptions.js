@@ -1,10 +1,11 @@
 require('dotenv').config();
-const { FoodGuideOptions } = require("../models/food_guide_model");
+const { FoodGuideOptions } = require("../../models/food_guide_model");
 const { OpenAI } = require('openai');
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const { zodResponseFormat } = require('openai/helpers/zod');
 async function getFoodGuideOptions(userInput, condition) {
     let system_message = "You are a helpful food guide assistant.";
+    
     if (condition) {
         system_message += `\nHere are some of the conditions that you must keep while generating a response:\n${condition}`;
     }
@@ -35,14 +36,13 @@ For example:
             { role: "user", content: prompt },
         ],
         response_format: zodResponseFormat(FoodGuideOptions, 'food_guide_options'),
-    });
+    }); 
 
     const responseContent = completion.choices[0].message.content;// Adjust based on the response structure
 
     if (!responseContent) {
         console.log('An error occurred');
     }
-    return responseContent || undefined;
-}
+    return responseContent || undefined;}
 
 module.exports = { getFoodGuideOptions };
